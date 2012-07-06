@@ -274,6 +274,7 @@
     //
     //  opts - options for plax
     //    activityTarget - optional; plax will only work within the bounds of this element, if supplied.
+    //    enableMotionOnDesktop - optional, defaults to false (uses ontouchstart detection)
     //
     //  Examples
     //
@@ -282,14 +283,13 @@
     //
     // returns nothing
     enable: function(opts){
+      opts = opts || {};
       $(document).bind('mousemove.plax', function (e) {
-        if(opts){
-          plaxActivityTarget = opts.activityTarget || $(window)
-        }
+        plaxActivityTarget = opts.activityTarget || $(window)
         plaxifier(e)
       })
 
-      if(moveable()){
+      if((('ontouchstart' in document) || opts.enableMotionOnDesktop) && moveable()){
         window.ondevicemotion = function(e){detectMotion(e)}
       }
 
